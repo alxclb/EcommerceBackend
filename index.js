@@ -1,5 +1,6 @@
 const express = require('express'),
       app = express(),
+      path = require('path'),
       mongoose = require('mongoose'),
       dotenv = require('dotenv'),
       bodyParser = require('body-parser'),
@@ -25,6 +26,11 @@ mongoose.connect(process.env.DB_CONNECT, {
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
+//Static file(Frontend)
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 //Route Middleware
 app.use('/api/user', authRoute);
 app.use('/api/products', productRoute);
